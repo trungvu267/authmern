@@ -4,7 +4,7 @@ import auth from './auth.router.js'
 import authentication from '../middlewares/auth.js'
 const Router = ExpressRouter()
 Router.get('/', (req, res) => {
-  res.send('🚀 Hello Server')
+  res.json({ msg: '🚀 Hello Server' })
 })
 Router.use('/auth', auth)
 Router.use('/', authentication, dashboard)
