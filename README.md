@@ -1,4 +1,5 @@
 # 🚀 TodoList
 
-- [ ] Config axios
+- [x] Config axios
+- [ ] Research JWT
 - [ ] Config redux/toolkit
