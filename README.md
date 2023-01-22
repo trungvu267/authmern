@@ -1,5 +1,7 @@
 # 🚀 TodoList
 
 - [x] Config axios
-- [ ] Research JWT
+- [x] Research JWT
+- [x] Config interceptor from axios
 - [ ] Config redux/toolkit
+- [ ] Handle error from server with axios
