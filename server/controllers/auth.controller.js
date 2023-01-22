@@ -19,7 +19,7 @@ const login = async (req, res, next) => {
     return
   }
   const token = user.createJWT()
-  res.status(200).json({ name: user.name, token })
+  res.status(200).json({ token })
 }
 const register = async (req, res, next) => {
   const user = await User.create(req.body)
