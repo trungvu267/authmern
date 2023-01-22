@@ -12,37 +12,22 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
+import * as request from '../api/userApi'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import useLocalStorage from '../hooks/useLocalStorage'
+const theme = createTheme()
+interface IFormInput {
+  email: string
+  password: string
 }
 
-const theme = createTheme()
-
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    })
+  const [, setValue] = useLocalStorage('ACCESS_TOKEN', null)
+  const { register, handleSubmit } = useForm<IFormInput>()
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    const dataFromServer: any = await request.signIn(data)
+    setValue(dataFromServer.token)
   }
-
   return (
     <ThemeProvider theme={theme}>
       <Container
@@ -68,7 +53,7 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -78,7 +63,7 @@ export default function SignIn() {
               fullWidth
               id="email"
               label="Email Address"
-              name="email"
+              {...register('email')}
               autoComplete="email"
               autoFocus
             />
@@ -86,7 +71,7 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              name="password"
+              {...register('password')}
               label="Password"
               type="password"
               id="password"
@@ -121,5 +106,22 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+  )
+}
+function Copyright(props: any) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
   )
 }
